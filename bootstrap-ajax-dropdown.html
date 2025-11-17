@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bootstrap AJAX Dropdown Demo</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+  <h1>AJAX Dropdown Demo</h1>
+  <div class="dropdown" id="myDropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Dropdown button
+    </button>
+    <ul class="dropdown-menu" id="myList"></ul>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const myDropdown = document.getElementById('myDropdown');
+myDropdown.addEventListener('show.bs.dropdown', event => {
+  const myList = document.getElementById('myList');
+  myList.innerHTML = '<div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>';
+
+  fetch('https://mi-linux.wlv.ac.uk/~2406957/game-ajax.php')
+    .then(res => res.json())
+    .then(data => {
+      myList.innerHTML = '';
+      data.forEach(game => {
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+        a.classList.add("dropdown-item");
+        a.href = "game-details.php?id=" + game.id; // link to details page
+        a.textContent = game.title;
+        li.appendChild(a);
+        myList.appendChild(li);
+      });
+    });
+});
+</script>
+</body>
+</html>

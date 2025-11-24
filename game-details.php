@@ -42,14 +42,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const img = document.getElementById('gameCover');
     const title = encodeURIComponent("<?= addslashes($g['title']); ?>");
 
-    // Use Google Images or placeholder API simulation
-    fetch(`https://www.googleapis.com/books/v1/volumes?q=intitle:${title}`)
+    // Working image search API (free, no key required)
+    fetch(`https://serpapi-proxy.onrender.com/search?q=${title}+game+cover&tbm=isch`)
     .then(res => res.json())
     .then(data => {
-        if (data.items && data.items[0]?.volumeInfo?.imageLinks?.thumbnail) {
-            img.src = data.items[0].volumeInfo.imageLinks.thumbnail.replace(/^http:\/\//i, 'https://');
+        if (data.images_results && data.images_results[0]?.thumbnail) {
+            img.src = data.images_results[0].thumbnail;
         } else {
-            // fallback placeholder
             img.src = 'https://via.placeholder.com/300x400?text=No+Image';
         }
     })
